@@ -2,9 +2,9 @@ name: Postman CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   run-postman-tests:
@@ -23,4 +23,4 @@ jobs:
         run: npm install -g newman
 
       - name: Run Postman collection
-        run: newman run postman/collection.json
+        run: newman run collection.json -e environment.json
