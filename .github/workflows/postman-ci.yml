@@ -1,14 +1,13 @@
-name: Postman Integration Tests (Newman)
+name: Postman CI
 
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-  workflow_dispatch:
 
 jobs:
-  newman:
+  run-postman-tests:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,17 +19,8 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Install Newman
+        run: npm install -g newman
 
-      - name: Run Postman collection via Newman
-        run: |
-          mkdir -p reports
-          npm run test:postman
-
-      - name: Upload test report (JUnit)
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: newman-junit-report
-          path: reports/junit.xml
+      - name: Run Postman collection
+        run: newman run postman/collection.json
